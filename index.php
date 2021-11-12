@@ -45,6 +45,21 @@ echo "\n\n Listar E-mails VARIAVEL ";
 echo "\n\n ";
 $_lista = listemails();
 print_r($_lista);
+echo "\n\n ===============================";
+
+
+############################################################################
+# Atualizar Language da conta de email
+############################################################################
+#$_user = PrimaryAuth();
+
+echo "\n\n ===============================";
+echo "\n\n Atualizar Language da conta de email ";
+echo "\n\n ";
+
+$_conta = UpdateEmail( 'sys-api@caixiave.es' );
+print_r($_conta);
+echo "\n\n ===============================";
 
 
 
