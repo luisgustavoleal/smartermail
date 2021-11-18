@@ -192,7 +192,8 @@ function listIPBlocked() {
     $_user = PrimaryAuth();
 
     # Parametros da API
-    $service = 'SMTP,IMAP,POP,WebMail';
+    #$service = 'SMTP,IMAP,POP,WebMail';    // Powershell funciona com nomes do serviços
+    $service = '0,1,2,3,4,5,6,7,8';         // PHP precisa ser o codigo
     $sort = "IP";
 
     # Cria o array
@@ -200,8 +201,8 @@ function listIPBlocked() {
         'Uri'    => 'http' . $_HTTPs . '://' . $_APIHost . '/api/v1/settings/sysadmin/blocked-ips',
         'Method' => 'POST',
         'Body'   => array(
-                          "serviceTypes" => [ $service ],
-                          "sortType" => ''. $sort . '',
+                          "serviceTypes" => [ 0,1,2,3,4,5,6,7,8 ],
+                          "sortType" => '' . $sort . '',
                         )
     );
     # PS = 'Body' = '{userMailSettings:{"localeId":"' + $localeId + '","dictionaryLanguage":"' + $dictionaryLanguage + '"}}'
@@ -230,9 +231,7 @@ function listIPBlocked() {
     $get_data = callAPI($_APIUpdate['Method'], $_APIUpdate['Uri'], $_API_json, true );
     $list = json_decode($get_data, true);
 
-    print_r($list); 
-    echo "\n\n IPs: " . $list['ipBlocks'];
-    echo "\n\n  " ;
+    #print_r($get_data); 
     return $get_data;
   
 }
