@@ -7,12 +7,19 @@ require 'smartermail.php';
 ############################################################################
 
 $_HTTPs         = 's';
-$_APIHost      = 'mail.caixiave.pt';
-$_dominio_email = 'caixiave.es';
-$_dominio_user  = 'sys-api@caixiave.es';
-$_dominio_pass  = 'xEj.GkU.p8H.3dh.2sB';
-$_uri           = 'http' . $_HTTPs . '://' . $_APIHost . '/api/v1/auth/authenticate-user';
 
+# Verificar o formato da URI e conta para utilizar a API, existe recursos que 
+# é necessário possuir conta ADM no dominio em questão como no exemplo abaixo
+# /api/v1/settings/domain/export-users = funcao listmail()
+#$_dominio_email = 'host.pt';
+#$_dominio_user  = 'user@host.pt';
+
+#$_APIHost       = 'mail9.host.net';
+$_APIHost       = 'mail.host.pt';
+#$_dominio_email = 'caixiave.es';
+#$_dominio_user  = 'user@host.pt';
+$_dominio_user  = 'user';
+$_dominio_pass  = 'pass';
 
 $_API = [
     "authUserName"  => $_dominio_user,
@@ -43,8 +50,8 @@ print_r($response);
 echo "\n\n ===============================";
 echo "\n\n Listar E-mails VARIAVEL ";
 echo "\n\n ";
-$_lista = listemails();
-print_r($_lista);
+#$_lista = listemails();
+#print_r($_lista);
 echo "\n\n ===============================";
 
 
@@ -57,10 +64,23 @@ echo "\n\n ===============================";
 echo "\n\n Atualizar Language da conta de email ";
 echo "\n\n ";
 
-$_conta = UpdateEmail( 'sys-api@caixiave.es' );
-print_r($_conta);
+#$_conta = UpdateEmail( 'sys-api@caixiave.es' );
+#print_r($_conta);
 echo "\n\n ===============================";
 
+
+############################################################################
+# Atualizar Language da conta de email
+############################################################################
+#$_user = PrimaryAuth();
+
+echo "\n\n ===============================";
+echo "\n\n Lista de IPs bloqueados no Servidor ";
+echo "\n\n ";
+
+$_listIP = listIPBlocked();
+print_r($_listIP);
+echo "\n\n ===============================";
 
 
 ?>
