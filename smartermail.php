@@ -12,13 +12,14 @@
 
 
 ############################################################################
+#
 # Funçao Autenticacao Primaria
+#
 #############################################################################
 
 function PrimaryAuth()  {
   
     global $_API;
-    global $_uri;
     global $_HTTPs;
     global $_APIHost;
 
@@ -42,7 +43,7 @@ function PrimaryAuth()  {
     # Chama a API
     $get_data = callAPI('POST', $_APIUpdate['Uri'], $_API_json, false);
     $Auth = json_decode($get_data, true);
-    #print_r($Auth); 
+    print_r($Auth); 
     #echo "\n\n".' Access Token: ' . $Auth['accessToken'];
    
     return $Auth;
@@ -50,6 +51,7 @@ function PrimaryAuth()  {
 };
 
 ############################################################################
+#
 # Lista contas de email do dominio
 #
 # ATENÇÃO: 
@@ -63,7 +65,6 @@ function listemails() {
     $_user = PrimaryAuth();
 
     global $_API;
-    global $_uri;
     global $_HTTPs;
     global $_APIHost;
 
@@ -88,7 +89,7 @@ function listemails() {
     # SERVER ADMIN AUTH TOCKEN
     $_API["Headers"] = array( 'Authorization' => "Bearer ".$_user['accessToken']  );
     $_headers_value  = $_API['Headers']['Authorization'];
-    $_headers_header = $_API['Headers'];
+    #$_headers_header = $_API['Headers'];
 
     # REFRESH
     $_API["Refresh"] = array( 'Refresh' => "token ".$_user['refreshToken']  );
@@ -117,13 +118,14 @@ function listemails() {
 function UpdateEmail( $conta ) {
      
     global $_API;
-    global $_uri;
+    #global $_uri;
     global $_HTTPs;
     global $_APIHost;
 
     #global $_user;
     $_user = PrimaryAuth();
 
+    # Parametros da API
     $localeId='pt';
     $dictionaryLanguage='pt';
 
@@ -154,7 +156,7 @@ function UpdateEmail( $conta ) {
     # SERVER ADMIN AUTH TOCKEN
     $_API["Headers"] = array( 'Authorization' => "Bearer ".$_user['accessToken']  );
     $_headers_value  = $_API['Headers']['Authorization'];
-    $_headers_header = $_API['Headers'];
+    #$_headers_header = $_API['Headers'];
 
     # REFRESH
     $_API["Refresh"] = array( 'Refresh' => "token ".$_user['refreshToken']  );
@@ -163,7 +165,7 @@ function UpdateEmail( $conta ) {
     $_API["accessTokenExpiration"] = array( 'DataTime' => $_user['accessTokenExpiration']  );
 
     # Chama a API
-    $get_data = callAPI($_APIUpdate['Method'], $_APIUpdate['Uri'], $_API_json );
+    $get_data = callAPI($_APIUpdate['Method'], $_APIUpdate['Uri'], $_API_json, true );
     $list = json_decode($get_data, true);
 
     #print_r($get_data); 
@@ -174,6 +176,70 @@ function UpdateEmail( $conta ) {
 
 
 ############################################################################
+#
+# Update conta de Email (Language)
+#
+############################################################################
+
+function listIPBlocked() {
+     
+    global $_API;
+    #global $_uri;
+    global $_HTTPs;
+    global $_APIHost;
+
+    #global $_user;
+    $_user = PrimaryAuth();
+
+    # Parametros da API
+    $service = 'SMTP,IMAP,POP,WebMail';
+    $sort = "IP";
+
+    # Cria o array
+    $_APIUpdate = array(
+        'Uri'    => 'http' . $_HTTPs . '://' . $_APIHost . '/api/v1/settings/sysadmin/blocked-ips',
+        'Method' => 'POST',
+        'Body'   => array(
+                          "serviceTypes" => [ $service ],
+                          "sortType" => ''. $sort . '',
+                        )
+    );
+    # PS = 'Body' = '{userMailSettings:{"localeId":"' + $localeId + '","dictionaryLanguage":"' + $dictionaryLanguage + '"}}'
+    
+    # Cria um Json só com o Body do array
+    $_API_json = json_encode($_APIUpdate['Body']);
+    echo "\n\n Json: " . $_API_json;
+    echo "\n\n Uri: " . $_APIUpdate['Uri'];
+    
+    echo "\n\n Services: " . $service . ' | sort: ' .  $sort;
+    echo "\n\n ";
+    #print_r($_API_json); 
+
+    # SERVER ADMIN AUTH TOCKEN
+    $_API["Headers"] = array( 'Authorization' => "Bearer ".$_user['accessToken']  );
+    $_headers_value  = $_API['Headers']['Authorization'];
+    #$_headers_header = $_API['Headers'];
+
+    # REFRESH
+    $_API["Refresh"] = array( 'Refresh' => "token ".$_user['refreshToken']  );
+
+    # EXPERATION
+    $_API["accessTokenExpiration"] = array( 'DataTime' => $_user['accessTokenExpiration']  );
+
+    # Chama a API
+    $get_data = callAPI($_APIUpdate['Method'], $_APIUpdate['Uri'], $_API_json, true );
+    $list = json_decode($get_data, true);
+
+    print_r($list); 
+    echo "\n\n IPs: " . $list['ipBlocks'];
+    echo "\n\n  " ;
+    return $get_data;
+  
+}
+
+
+############################################################################
+#
 # Funcao para chamar a API
 #
 # O parametro $header se definido como TRUE habilita a alteracao do header
