@@ -16,7 +16,7 @@ $_HTTPs         = 's';
 
 #$_APIHost       = 'mail9.host.net';
 $_APIHost       = 'mail.host.pt';
-#$_dominio_email = 'caixiave.es';
+#$_dominio_email = 'dominio.pt';
 #$_dominio_user  = 'user@host.pt';
 $_dominio_user  = 'user';
 $_dominio_pass  = 'pass';
